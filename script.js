@@ -13,7 +13,7 @@ textContent.addEventListener("click", function (event) {
     },
     body: JSON.stringify({
       message: value,
-      num: value.length
+      num: value.length + ' letters'
     })
   });
   contentEl.innerHTML = "<p>" + value.length + ' symbols' + "</p>";
@@ -35,10 +35,25 @@ optionsEl.addEventListener("click", function (event) {
     },
     body: JSON.stringify({
       message: value,
-      num: len.length
+      num: len.length + ' words',
     })
   });
   contentEl.innerHTML = "<p>" + len.length + ' words' + "</p>";
   inputEl.value = ''
 
 });
+async function getMessages() {
+  const response = await fetch(url);
+  const data = await response.json();
+
+  const element = document.querySelector(".web");
+  element.innerHTML = "";
+
+  for (const item of data) {
+    const message = item.message;
+    const num = item.num;
+    element.innerHTML += "<p>" + message + ": " + num + "</p>";
+  }
+}
+getMessages()
+setInterval(getMessages, 3000);
